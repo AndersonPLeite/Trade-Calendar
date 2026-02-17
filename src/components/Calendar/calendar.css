@@ -1,0 +1,107 @@
+body {
+  margin: 0;
+  background: #0f1117;
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+/* Layout principal */
+.calendar-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 250px;
+  gap: 20px;
+  padding: 30px;
+}
+
+/* Header */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.month-title {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* Dias da semana */
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 10px;
+  opacity: 0.6;
+  font-size: 14px;
+}
+
+/* Grid principal */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+}
+
+/* Card do dia */
+.day {
+  background: #1c1f26;
+  border-radius: 12px;
+  padding: 10px;
+  min-height: 110px;
+  position: relative;
+  transition: 0.2s ease;
+}
+
+.day.profit {
+  background: #0f3d2e;
+  border: 1px solid #00ff9c;
+}
+
+.day.loss {
+  background: #3d1414;
+  border: 1px solid #ff4d4d;
+}
+
+.day:hover {
+  transform: translateY(-2px);
+}
+
+.date {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.result {
+  margin-top: 30px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.trades {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.week-card {
+  background: #1c1f26;
+  padding: 15px;
+  border-radius: 12px;
+}
+
+.week-profit {
+  color: #00ff9c;
+}
+
+.week-loss {
+  color: #ff4d4d;
+}
