@@ -1,18 +1,44 @@
-import { useState } from "react";
-import { TradeCalendar } from "../services/TradeCalendar";
+import { useState, useEffect } from "react";
+import type { TradeDay } from "../models/TradeDay";
 
 export function useTradeCalendar() {
-  const [calendar] = useState(new TradeCalendar());
-  const [, setRefresh] = useState(0);
+  const [trades, setTrades] = useState<Record<string, TradeDay>>({});
 
-  function addTrade(date: string, result: number, trades: number) {
-    calendar.addTrade(date, result, trades);
-    setRefresh(prev => prev + 1);
+  function addTrade(date: Date, result: number, tradesQty: number) {
+    const key = date.toISOString().split("T")[0];
+
+    const newTrade = {
+      date: key,
+      result,
+      trades: tradesQty,
+    };
+
+    const updated = {
+      ...trades,
+      [key]: newTrade,
+    };
+
+    setTrades(updated);
+    localStorage.setItem("trades", JSON.stringify(updated));
   }
 
+  function removeTrade(date: Date) {
+    const key = date.toISOString().split("T")[0];
+    const updated = { ...trades };
+    delete updated[key];
+
+    setTrades(updated);
+    localStorage.setItem("trades", JSON.stringify(updated));
+  }
+
+  useEffect(() => {
+    const saved = localStorage.getItem("trades");
+    if (saved) setTrades(JSON.parse(saved));
+  }, []);
+
   return {
-    trades: calendar.getTrades(),
-    stats: calendar.getStats(),
-    addTrade
+    trades,
+    addTrade,
+    removeTrade,
   };
 }

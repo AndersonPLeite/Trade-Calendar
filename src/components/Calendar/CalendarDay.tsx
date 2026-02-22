@@ -3,9 +3,10 @@ import type { TradeDay } from "../../models/TradeDay";
 type Props = {
   day: Date;
   trade?: TradeDay;
+  onClick: (date: Date) => void;
 };
 
-export function CalendarDay({ day, trade }: Props) {
+export function CalendarDay({ day, trade, onClick }: Props) {
   const result = trade?.result ?? 0;
 
   let className = "day";
@@ -13,7 +14,7 @@ export function CalendarDay({ day, trade }: Props) {
   if (result < 0) className += " loss";
 
   return (
-    <div className={className}>
+    <div className={className} onClick={() => onClick(day)}>
       <span className="date">{day.getDate()}</span>
 
       {trade && (
@@ -22,6 +23,8 @@ export function CalendarDay({ day, trade }: Props) {
           <div className="trades">{trade.trades} trades</div>
         </>
       )}
+
+      {!trade && <span className="add">+</span>}
     </div>
   );
 }

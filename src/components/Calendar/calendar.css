@@ -19,18 +19,24 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  margin-left: 30px;
 }
 
-.month-title {
-  font-size: 22px;
+
+.month-header {
+  font-size: 26px;
   font-weight: bold;
+  display: flex;
+  justify-content: center; /* centraliza horizontal */
+  align-items: center;     /* mesma altura vertical */
+  gap: 900px;               /* espaço entre eles */
 }
 
 /* Dias da semana */
 .weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  margin-bottom: 10px;
+  margin-top: -21px;
   opacity: 0.6;
   font-size: 14px;
 }
@@ -38,8 +44,8 @@ body {
 /* Grid principal */
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(7, minmax(140px, 1fr));
+  gap: 14px;
 }
 
 /* Card do dia */
@@ -47,9 +53,10 @@ body {
   background: #1c1f26;
   border-radius: 12px;
   padding: 10px;
-  min-height: 110px;
+  min-height: 130px;
   position: relative;
   transition: 0.2s ease;
+  cursor: pointer;
 }
 
 .day.profit {
@@ -85,6 +92,15 @@ body {
   opacity: 0.7;
 }
 
+.add {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 26px;
+  opacity: 0.8;
+}
+
 /* Sidebar */
 .sidebar {
   display: flex;
@@ -104,4 +120,59 @@ body {
 
 .week-loss {
   color: #ff4d4d;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  width: 320px;
+  background: #1c1f26;
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-content input {
+  background: #0f1117;
+  border: 1px solid #2b2f3a;
+  color: white;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.modal-content button {
+  background: #2b2f3a;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background: #3a4050;
+}
+
+.modal-content .danger {
+  background: #5c1d1d;
+}
+
+.modal-content .danger:hover {
+  background: #7a2525;
+}
+
+@media (max-width: 1200px) {
+  .calendar-grid {
+    grid-template-columns: repeat(7, minmax(110px, 1fr));
+  }
 }

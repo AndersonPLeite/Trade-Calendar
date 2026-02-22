@@ -1,9 +1,12 @@
+import { useState } from "react";
 import CalendarGrid from "./CalendarGrid";
+import { TradeModal } from "./TradeModal";
 import { useTradeCalendar } from "../../hooks/useTradeCalendar";
 import "./calendar.css";
 
 export function Calendar() {
-  const { trades } = useTradeCalendar();
+  const { trades, addTrade, removeTrade } = useTradeCalendar();
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const now = new Date();
 
   const getDaysInMonth = (date: Date) => {
@@ -26,16 +29,32 @@ export function Calendar() {
 
   const days = getDaysInMonth(now);
 
+  function handleSaveTrade(date: Date, result: number, tradesQty: number) {
+    addTrade(date, result, tradesQty);
+    setSelectedDate(null);
+  }
+
+  function handleDeleteTrade(date: Date) {
+    removeTrade(date);
+    setSelectedDate(null);
+  }
+
+  const selectedKey = selectedDate?.toISOString().split("T")[0];
+  const selectedTrade = selectedKey ? trades[selectedKey] : undefined;
+
   return (
     <div>
-      <div className="calendar-header">
+      <div className="month-header">
         <div className="month-title">
-          {now.toLocaleString("default", { month: "long" })} {now.getFullYear()}
+          {now
+            .toLocaleString("pt-BR", { month: "long" })
+            .charAt(0)
+            .toUpperCase() +
+            now.toLocaleString("pt-BR", { month: "long" }).slice(1)}{" "}
+          {now.getFullYear()}
         </div>
 
-        <div>
-          Monthly stats
-        </div>
+        <div className="month-stats">Estatísticas do mês</div>
       </div>
 
       <div className="calendar-wrapper">
@@ -53,6 +72,7 @@ export function Calendar() {
           <CalendarGrid
             days={days}
             trade={trades}
+            onClick={(date: Date) => setSelectedDate(date)}
           />
         </div>
 
@@ -78,6 +98,16 @@ export function Calendar() {
           </div>
         </div>
       </div>
+
+      {selectedDate && (
+        <TradeModal
+          date={selectedDate}
+          trade={selectedTrade}
+          onSave={handleSaveTrade}
+          onDelete={handleDeleteTrade}
+          onClose={() => setSelectedDate(null)}
+        />
+      )}
     </div>
   );
 }
