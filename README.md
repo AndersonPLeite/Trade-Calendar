@@ -39,14 +39,22 @@ Este projeto foi criado para simular um **diário de trading profissional**, sem
 ## 📂 Estrutura do Projeto
 
 
-src/
- ├── components/
- │   ├── CalendarDay
- │   ├── CalendarGrid
- │   └── TradeModal
- ├── hooks/
- │   └── useTradeCalendar
- ├── models/
+src/  
+
+ ├── components/  
+ 
+ │   ├── CalendarDay  
+ 
+ │   ├── CalendarGrid  
+ 
+ │   └── TradeModal  
+ 
+ ├── hooks/  
+ 
+ │   └── useTradeCalendar  
+ 
+ ├── models/  
+ 
  │   └── TradeDay
 
 
