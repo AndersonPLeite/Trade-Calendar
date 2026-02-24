@@ -1,4 +1,4 @@
-# 📈 Calendário de PnL para Trading
+# 📈 Calendário de PnL para Trade
 
 Um diário de trading profissional desenvolvido para **day traders** acompanharem desempenho diário, lucro e prejuízo (PnL) e consistência operacional.
 
@@ -33,6 +33,12 @@ Este projeto foi criado para simular um **diário de trading profissional**, sem
 * **CSS Grid / Flexbox**
 * **LocalStorage**
 * Arquitetura baseada em Custom Hooks
+  
+   <img height="100px" width="100px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" />
+   <img height="100px" width="100px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" />
+   <img height="100px" width="100px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg" />
+          
+          
 
 ---
 
