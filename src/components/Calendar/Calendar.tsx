@@ -9,25 +9,64 @@ export function Calendar() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const now = new Date();
 
-  const getDaysInMonth = (date: Date) => {
+  const getBusinessDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
-    const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     const daysInMonth = lastDay.getDate();
-    const startingDayOfWeek = firstDay.getDay();
 
-    const days: (Date | null)[] = [];
-    for (let i = 0; i < startingDayOfWeek; i++) {
-      days.push(null);
-    }
+    const days: Date[] = [];
     for (let i = 1; i <= daysInMonth; i++) {
-      days.push(new Date(year, month, i));
+      const day = new Date(year, month, i);
+      const weekday = day.getDay();
+      if (weekday !== 0 && weekday !== 6) {
+        days.push(day);
+      }
     }
+
     return days;
   };
 
-  const days = getDaysInMonth(now);
+  const days = getBusinessDaysInMonth(now);
+
+  const getWeekIndexInMonth = (date: Date) => {
+    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    const firstWeekdayMondayStart = (firstDay.getDay() + 6) % 7;
+    const dayOffset = date.getDate() - 1;
+    return Math.floor((firstWeekdayMondayStart + dayOffset) / 7) + 1;
+  };
+
+  const maxWeekInMonth = days.length
+    ? Math.max(...days.map(getWeekIndexInMonth))
+    : 0;
+
+  const weeklyStats = Array.from({ length: maxWeekInMonth }, (_, i) => ({
+    week: i + 1,
+    result: 0,
+    trades: 0,
+  }));
+
+  Object.values(trades).forEach((trade) => {
+    const tradeDate = new Date(trade.date);
+    if (
+      tradeDate.getFullYear() !== now.getFullYear() ||
+      tradeDate.getMonth() !== now.getMonth()
+    ) {
+      return;
+    }
+
+    const weekIndex = getWeekIndexInMonth(tradeDate) - 1;
+    if (!weeklyStats[weekIndex]) return;
+    weeklyStats[weekIndex].result += trade.result;
+    weeklyStats[weekIndex].trades += trade.trades;
+  });
+
+  const formatCurrency = (value: number) =>
+    value.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 2,
+    });
 
   function handleSaveTrade(date: Date, result: number, tradesQty: number) {
     addTrade(date, result, tradesQty);
@@ -58,15 +97,13 @@ export function Calendar() {
       </div>
 
       <div className="calendar-wrapper">
-        <div>
-          <div className="weekdays">
-            <div>Sun</div>
+        <div className="calendar-main">
+          <div className="weekdays">  
             <div>Mon</div>
             <div>Tue</div>
             <div>Wed</div>
             <div>Thu</div>
             <div>Fri</div>
-            <div>Sat</div>
           </div>
 
           <CalendarGrid
@@ -77,25 +114,23 @@ export function Calendar() {
         </div>
 
         <div className="sidebar">
-          <div className="week-card">
-            <h4>Week 1</h4>
-            <div className="week-profit">$830</div>
-          </div>
-
-          <div className="week-card">
-            <h4>Week 2</h4>
-            <div className="week-profit">$1.46K</div>
-          </div>
-
-          <div className="week-card">
-            <h4>Week 3</h4>
-            <div className="week-profit">$1.44K</div>
-          </div>
-
-          <div className="week-card">
-            <h4>Week 4</h4>
-            <div className="week-loss">-$1.01K</div>
-          </div>
+          {weeklyStats.map((week) => (
+            <div className="week-card" key={week.week}>
+              <h4>Week {week.week}</h4>
+              <div
+                className={
+                  week.result > 0
+                    ? "week-profit"
+                    : week.result < 0
+                    ? "week-loss"
+                    : "week-neutral"
+                }
+              >
+                {formatCurrency(week.result)}
+              </div>
+              <div className="week-trades">{week.trades} trades</div>
+            </div>
+          ))}
         </div>
       </div>
 

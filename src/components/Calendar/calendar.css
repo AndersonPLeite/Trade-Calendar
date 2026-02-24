@@ -8,15 +8,20 @@ body {
 /* Layout principal */
 .calendar-wrapper {
   display: grid;
-  grid-template-columns: 1fr 250px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 20px;
   padding: 30px;
+}
+
+.calendar-main {
+  grid-column: span 5;
 }
 
 /* Header */
 .calendar-header {
   display: flex;
-  justify-content: space-between;
+  
+  justify-content: center;
   align-items: center;
   margin-bottom: 20px;
   margin-left: 30px;
@@ -24,7 +29,7 @@ body {
 
 
 .month-header {
-  font-size: 26px;
+  font-size: 36px;
   font-weight: bold;
   display: flex;
   justify-content: center; /* centraliza horizontal */
@@ -35,8 +40,8 @@ body {
 /* Dias da semana */
 .weekdays {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  margin-top: -21px;
+  grid-template-columns: repeat(5, 1fr);
+  margin-top: -25px;
   opacity: 0.6;
   font-size: 14px;
 }
@@ -44,10 +49,9 @@ body {
 /* Grid principal */
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, minmax(140px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
 }
-
 /* Card do dia */
 .day {
   background: #1c1f26;
@@ -83,12 +87,12 @@ body {
 
 .result {
   margin-top: 30px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
 }
 
 .trades {
-  font-size: 12px;
+  font-size: 18px;
   opacity: 0.7;
 }
 
@@ -99,6 +103,7 @@ body {
   transform: translate(-50%, -50%);
   font-size: 26px;
   opacity: 0.8;
+  font-weight: bolder;
 }
 
 /* Sidebar */
@@ -106,11 +111,35 @@ body {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  grid-column: span 1;
 }
 
 .week-card {
   background: #1c1f26;
-  padding: 15px;
+  border-radius: 12px;
+  padding: 10px;
+  min-height: 148px;
+  box-sizing: border-box;
+}
+
+.week-card h4 {
+  margin: 0;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.week-card .week-profit,
+.week-card .week-loss,
+.week-card .week-neutral {
+  margin-top: 30px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.week-trades {
+  margin-top: 8px;
+  font-size: 18px;
+  opacity: 0.7;
   border-radius: 12px;
 }
 
@@ -120,6 +149,10 @@ body {
 
 .week-loss {
   color: #ff4d4d;
+}
+
+.week-neutral {
+  color: #c9d1e2;
 }
 
 .modal {
@@ -172,7 +205,16 @@ body {
 }
 
 @media (max-width: 1200px) {
+  .calendar-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-main,
+  .sidebar {
+    grid-column: span 1;
+  }
+
   .calendar-grid {
-    grid-template-columns: repeat(7, minmax(110px, 1fr));
+    grid-template-columns: repeat(5, minmax(110px, 1fr));
   }
 }

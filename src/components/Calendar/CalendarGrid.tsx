@@ -1,25 +1,32 @@
-import type { TradeDay } from '../../models/TradeDay';
 import { CalendarDay } from './CalendarDay';
+import type { TradeDay } from '../../models/TradeDay';
 
 interface CalendarGridProps {
-  days: (Date | null)[];
+  days: Date[];
   trade: Record<string, TradeDay>;
   onClick: (date: Date) => void;
 }
 
 export default function CalendarGrid({ days, trade, onClick }: CalendarGridProps) {
+  const handleDayClick = (date: Date) => {
+    onClick(date);
+  };
+
   return (
     <div className="calendar-grid">
-      {days.map((day, index) => {
-        if (!day) {
-          return <div key={index} className="day" />;
-        }
+      {days
+        .map((day) => {
+          const key = day.toISOString().split("T")[0];
 
-        const formatted = day.toISOString().split("T")[0];
-        const tradeData = trade[formatted];
-
-        return <CalendarDay key={formatted} day={day} trade={tradeData} onClick={onClick} />;
-      })}
+          return (
+            <CalendarDay
+              key={key}
+              day={day}
+              trade={trade[key]}
+              onClick={handleDayClick}
+            />
+          );
+        })}
     </div>
   );
 }
